@@ -80,7 +80,7 @@ if shap_values[0].shape[1] == features.shape[1]:
     )
     # 显示图形
     plt.show()
-else:
+    else:
     print("维度不匹配，无法绘制 force plot")
 
         # 在 Streamlit 中显示图片

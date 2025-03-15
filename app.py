@@ -65,18 +65,40 @@ if st.button("Predict"):
         # 显示预测结果
         st.subheader("Prediction Result:")
         st.write(f"Predicted possibility of AKI is **{probability:.2f}%**")
+if st.button("Predict"):
+    try:
+        # ... [之前的预测代码保持不变] ...
 
-        # 计算 SHAP 值并生成力图
+        # 计算 SHAP 值
         explainer = shap.TreeExplainer(model)
         shap_values = explainer.shap_values(features)
 
+        # 调试输出维度
+        st.write("SHAP Values Shape:", np.array(shap_values).shape)
+        st.write("Features Shape:", features.shape)
+
+        # 动态选择预测类别的 SHAP 值
+        class_index = predicted_class
+        if isinstance(shap_values, list):
+            # 分类模型：shap_values 是列表，每个元素对应一个类别
+            shap_value_for_plot = shap_values[class_index][0, :]
+            base_value = explainer.expected_value[class_index]
+        else:
+            # 回归模型：shap_values 是单一数组
+            shap_value_for_plot = shap_values[0, :]
+            base_value = explainer.expected_value
+
+        # 创建新的 Matplotlib 画布
+        plt.figure(figsize=(10, 4))
+
         # 绘制 SHAP 力图
         shap.force_plot(
-            explainer.expected_value[0],
-            shap_values[0][0],  # 对第一个样本的 SHAP 值
+            base_value,
+            shap_value_for_plot,
             features.iloc[0].values,
             feature_names=features.columns,
-            matplotlib=True
+            matplotlib=True,
+            show=False
         )
         plt.savefig("shap_force_plot.png", bbox_inches="tight", dpi=300)
 

@@ -71,14 +71,17 @@ if st.button("Predict"):
         shap_values = explainer.shap_values(features)
 
         # 绘制 SHAP 力图
-        shap.force_plot(
-        explainer.expected_value[0],  # 使用对应类别的基准值
-        shap_values[0][0, :],         # 第一个样本的 SHAP 值（确保是二维索引）
-        features.iloc[0, :],                    # 替换原X_test为你的features，提取第一行
-        feature_names=features.columns,         # 显式传递特征名称
-        matplotlib=True
-        )
-        plt.savefig("shap_force_plot.png", bbox_inches="tight", dpi=300)
+if shap_values[0].shape[1] == features.shape[1]:
+    shap.force_plot(
+        explainer.expected_value[0], 
+        shap_values[0][0, :], 
+        features.iloc[0, :],
+        matplotlib=True  # 如果不想用 JS，传入 matplotlib=True
+    )
+    # 显示图形
+    plt.show()
+else:
+    print("维度不匹配，无法绘制 force plot")
 
         # 在 Streamlit 中显示图片
         st.image("shap_force_plot.png", caption="SHAP Force Plot", use_column_width=True)

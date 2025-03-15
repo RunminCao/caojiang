@@ -74,7 +74,7 @@ if st.button("Predict"):
         shap.force_plot(
             explainer.expected_value[0],
             shap_values[0],  # 对第一个样本的 SHAP 值
-            features,
+            features[0],
             matplotlib=True
         )
         plt.savefig("shap_force_plot.png", bbox_inches="tight", dpi=300)

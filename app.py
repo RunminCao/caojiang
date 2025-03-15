@@ -71,7 +71,6 @@ if st.button("Predict"):
         shap_values = explainer.shap_values(features)
 
         # 绘制 SHAP 力图
-    shap_values[0].shape[1] == features.shape[1]:
     shap.force_plot(
         explainer.expected_value[0],  # 使用对应类别的基准值
         shap_values[0][0, :],         # 第一个样本的 SHAP 值（确保是二维索引）

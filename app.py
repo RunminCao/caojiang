@@ -66,25 +66,5 @@ if st.button("Predict"):
         st.subheader("Prediction Result:")
         st.write(f"Predicted possibility of AKI is **{probability:.2f}%**")
 
-        # 计算 SHAP 值并生成力图
-        explainer = shap.TreeExplainer(model)
-        shap_values = explainer.shap_values(features)
-
-        # 绘制 SHAP 力图
-if shap_values[0].shape[1] == features.shape[1]:
-    shap.force_plot(
-        explainer.expected_value[0], 
-        shap_values[0][0, :], 
-        features.iloc[0, :],
-        matplotlib=True  # 如果不想用 JS，传入 matplotlib=True
-    )
-    # 显示图形
-    plt.show()
-    else:
-    print("维度不匹配，无法绘制 force plot")
-
-        # 在 Streamlit 中显示图片
-        st.image("shap_force_plot.png", caption="SHAP Force Plot", use_column_width=True)
-
     except Exception as e:
         st.error(f"An error occurred: {e}")

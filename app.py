@@ -61,10 +61,6 @@ if st.button("Predict"):
         explainer = shap.TreeExplainer(model)
         shap_values = explainer.shap_values(features)
 
-        # 调试输出维度
-        st.write("SHAP Values Shape:", np.array(shap_values).shape)
-        st.write("Features Shape:", features.shape)
-
         # 动态选择预测类别的 SHAP 值
         class_index = predicted_class
         if isinstance(shap_values, list):

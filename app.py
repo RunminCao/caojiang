@@ -55,40 +55,35 @@ features = pd.DataFrame([feature_values], columns=feature_names)
 # 预测与 SHAP 可视化
 if st.button("Predict"):
     try:
-        # ... [之前的预测代码保持不变] ...
+        # 模型预测
+        predicted_class = model.predict(features)[0]
+        predicted_proba = model.predict_proba(features)[0]
 
-        # 计算 SHAP 值
+        # 提取预测的类别概率
+        probability = predicted_proba[predicted_class] * 100
+
+        # 显示预测结果
+        st.subheader("Prediction Result:")
+        st.write(f"Predicted possibility of AKI is **{probability:.2f}%**")
+
+        # 计算 SHAP 值并生成力图
         explainer = shap.TreeExplainer(model)
         shap_values = explainer.shap_values(features)
 
-        # 动态选择预测类别的 SHAP 值
-        class_index = predicted_class
-        if isinstance(shap_values, list):
-            # 分类模型：shap_values 是列表，每个元素对应一个类别
-            shap_value_for_plot = shap_values[class_index][0, :]
-            base_value = explainer.expected_value[class_index]
-        else:
-            # 回归模型：shap_values 是单一数组
-            shap_value_for_plot = shap_values[0, :]
-            base_value = explainer.expected_value
-
-        # 创建新的 Matplotlib 画布
-        plt.figure(figsize=(10, 4))
-
         # 绘制 SHAP 力图
-        shap.force_plot(
-            base_value,
-            shap_value_for_plot,
-            features.iloc[0].values,
-            feature_names=features.columns,
-            matplotlib=True,
-            show=False
-        )
-        plt.title(f"SHAP Analysis: AKI Probability {probability:.2f}%", fontsize=12)
-        plt.tight_layout()
+    class_index = 0
+    shap_values[class_index].shape[1] == features.shape[1]:
+    shap.force_plot(
+        explainer.expected_value[class_index],  # 使用对应类别的基准值
+        shap_values[class_index][0, :],         # 第一个样本的 SHAP 值（确保是二维索引）
+        features.iloc[0, :],                    # 替换原X_test为你的features，提取第一行
+        feature_names=features.columns,         # 显式传递特征名称
+        matplotlib=True
+    )
         plt.savefig("shap_force_plot.png", bbox_inches="tight", dpi=300)
-        plt.close()
-        st.image("shap_force_plot.png", caption="SHAP Feature Impact", use_column_width=True)
+
+        # 在 Streamlit 中显示图片
+        st.image("shap_force_plot.png", caption="SHAP Force Plot", use_column_width=True)
 
     except Exception as e:
-        st.error(f"Error: {e}")
+        st.error(f"An error occurred: {e}")

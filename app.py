@@ -17,9 +17,9 @@ feature_names = [
     "Gender", "BMI", "Race"
 ]
 feature_ranges = {
-    "BMI": {"type": "numerical", "min": 25, "max": 100, "default": 18},
-    "Gender": {"type": "categorical", "options": ["MAN", "Female"]},
-    "Race": {"type": "categorical", "options": ["R", "N", "B", "A", "C"]},
+    "BMI": {"type": "numerical", "min": 25, "max": 100, "default": 25},
+    "Gender": {"type": "categorical", "options": ["1", "2"]},
+    "Race": {"type": "categorical", "options": ["1", "2", "3", "4", "5"]},
 }
 
 # Streamlit 界面

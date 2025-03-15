@@ -72,7 +72,7 @@ if st.button("Predict"):
 
         # 绘制 SHAP 力图
         shap.force_plot(
-            explainer.expected_value,
+            explainer.expected_value[0],
             shap_values[0],  # 对第一个样本的 SHAP 值
             features,
             matplotlib=True

@@ -18,7 +18,7 @@ feature_names = [
 ]
 feature_ranges = {
     "BMI": {"type": "numerical", "min": 25, "max": 100, "default": 25},
-    "Gender": {"type": "categorical", "options": ["1", "2"]},
+    "Gender": {"type": "categorical", "options": ["1", "2"], "mapping": {"1": "Male", "2": "Female"}},
     "Race": {"type": "categorical", "options": ["1", "2", "3", "4", "5"]},
 }
 
